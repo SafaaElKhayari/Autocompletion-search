@@ -1,0 +1,16 @@
+{
+  "properties" : {
+    "id": {
+      "type": "keyword"
+    },
+    "description": {
+      "type": "text"
+    },
+    "lat": {
+      "type": "text"
+    },
+    "lon": {
+      "type": "date"
+    }
+  }
+}
