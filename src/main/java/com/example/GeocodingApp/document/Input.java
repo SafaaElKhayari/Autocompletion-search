@@ -1,30 +1,42 @@
 
-package com.example.GeocodingApp.configuration.results;
+package com.example.GeocodingApp.document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
+
+import com.example.GeocodingApp.helper.Indices;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
+
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "type",
-    "coordinates"
+    "name",
+    "features"
 })
 @Generated("jsonschema2pojo")
-public class Geometry {
+public class Input {
 
     @JsonProperty("type")
     private String type;
-    @JsonProperty("coordinates")
-    private List<List<List<List<Double>>>> coordinates = new ArrayList<List<List<List<Double>>>>();
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("features")
+    private List<Feature> features = new ArrayList<Feature>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -38,23 +50,38 @@ public class Geometry {
         this.type = type;
     }
 
-    public Geometry withType(String type) {
+    public Input withType(String type) {
         this.type = type;
         return this;
     }
 
-    @JsonProperty("coordinates")
-    public List<List<List<List<Double>>>> getCoordinates() {
-        return coordinates;
+    @JsonProperty("name")
+    public String getName() {
+        return name;
     }
 
-    @JsonProperty("coordinates")
-    public void setCoordinates(List<List<List<List<Double>>>> coordinates) {
-        this.coordinates = coordinates;
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Geometry withCoordinates(List<List<List<List<Double>>>> coordinates) {
-        this.coordinates = coordinates;
+    public Input withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @JsonProperty("features")
+    public List<Feature> getFeatures() {
+        return features;
+    }
+
+    @JsonProperty("features")
+    public void setFeatures(List<Feature> features) {
+        this.features = features;
+    }
+
+    public Input withFeatures(List<Feature> features) {
+        this.features = features;
         return this;
     }
 
@@ -68,7 +95,7 @@ public class Geometry {
         this.additionalProperties.put(name, value);
     }
 
-    public Geometry withAdditionalProperty(String name, Object value) {
+    public Input withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }
@@ -76,14 +103,18 @@ public class Geometry {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Geometry.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(Input.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("type");
         sb.append('=');
         sb.append(((this.type == null)?"<null>":this.type));
         sb.append(',');
-        sb.append("coordinates");
+        sb.append("name");
         sb.append('=');
-        sb.append(((this.coordinates == null)?"<null>":this.coordinates));
+        sb.append(((this.name == null)?"<null>":this.name));
+        sb.append(',');
+        sb.append("features");
+        sb.append('=');
+        sb.append(((this.features == null)?"<null>":this.features));
         sb.append(',');
         sb.append("additionalProperties");
         sb.append('=');
@@ -100,7 +131,8 @@ public class Geometry {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.coordinates == null)? 0 :this.coordinates.hashCode()));
+        result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
+        result = ((result* 31)+((this.features == null)? 0 :this.features.hashCode()));
         result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         return result;
@@ -111,11 +143,11 @@ public class Geometry {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Geometry) == false) {
+        if ((other instanceof Input) == false) {
             return false;
         }
-        Geometry rhs = ((Geometry) other);
-        return ((((this.coordinates == rhs.coordinates)||((this.coordinates!= null)&&this.coordinates.equals(rhs.coordinates)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))));
+        Input rhs = ((Input) other);
+        return (((((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name)))&&((this.features == rhs.features)||((this.features!= null)&&this.features.equals(rhs.features))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))));
     }
 
 }

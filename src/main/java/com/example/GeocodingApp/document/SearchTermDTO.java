@@ -5,7 +5,24 @@ import java.util.List;
 public class SearchTermDTO {
     private List<String> fields;
     private String searchTerm;
+    private float lat;
+    private float lon;
 
+    public float getLat() {
+        return lat;
+    }
+
+    public void setLat(float lat) {
+        this.lat = lat;
+    }
+
+    public float getLon() {
+        return lon;
+    }
+
+    public void setLon(float lon) {
+        this.lon = lon;
+    }
 
     public List<String> getFields() {
         return fields;

@@ -1,16 +1,25 @@
 
-package com.example.GeocodingApp.configuration.results;
+package com.example.GeocodingApp.document;
 
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.processing.Generated;
+import com.example.GeocodingApp.helper.Indices;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
+@Document(indexName = Indices.DATA_INDEX)
+@Setting(settingPath = "static/Settings.json")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "type",
@@ -20,12 +29,20 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @Generated("jsonschema2pojo")
 public class Feature {
 
+    @Id
+    @ReadOnlyProperty
+    @Field(type = FieldType.Text)
     @JsonProperty("type")
     private String type;
+
+    @Field(type = FieldType.Nested, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
     @JsonProperty("properties")
     private Properties properties;
+
+    @Field(type = FieldType.Nested)
     @JsonProperty("geometry")
     private Geometry geometry;
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 

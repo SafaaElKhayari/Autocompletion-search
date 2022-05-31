@@ -1,5 +1,5 @@
 
-package com.example.GeocodingApp.configuration.results;
+package com.example.GeocodingApp.document;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,22 +12,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "type",
-    "name",
-    "features"
+    "coordinates"
 })
 @Generated("jsonschema2pojo")
-public class InputGeojson {
+public class Geometry {
 
     @JsonProperty("type")
     private String type;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("features")
-    private List<Feature> features = new ArrayList<Feature>();
+    @Field(type = FieldType.Keyword)
+    @JsonProperty("coordinates")
+    private List<List<List<List<Double>>>> coordinates = new ArrayList<List<List<List<Double>>>>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -41,38 +42,23 @@ public class InputGeojson {
         this.type = type;
     }
 
-    public InputGeojson withType(String type) {
+    public Geometry withType(String type) {
         this.type = type;
         return this;
     }
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
+    @JsonProperty("coordinates")
+    public List<List<List<List<Double>>>> getCoordinates() {
+        return coordinates;
     }
 
-    @JsonProperty("name")
-    public void setName(String name) {
-        this.name = name;
+    @JsonProperty("coordinates")
+    public void setCoordinates(List<List<List<List<Double>>>> coordinates) {
+        this.coordinates = coordinates;
     }
 
-    public InputGeojson withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    @JsonProperty("features")
-    public List<Feature> getFeatures() {
-        return features;
-    }
-
-    @JsonProperty("features")
-    public void setFeatures(List<Feature> features) {
-        this.features = features;
-    }
-
-    public InputGeojson withFeatures(List<Feature> features) {
-        this.features = features;
+    public Geometry withCoordinates(List<List<List<List<Double>>>> coordinates) {
+        this.coordinates = coordinates;
         return this;
     }
 
@@ -86,7 +72,7 @@ public class InputGeojson {
         this.additionalProperties.put(name, value);
     }
 
-    public InputGeojson withAdditionalProperty(String name, Object value) {
+    public Geometry withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }
@@ -94,18 +80,14 @@ public class InputGeojson {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(InputGeojson.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(Geometry.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("type");
         sb.append('=');
         sb.append(((this.type == null)?"<null>":this.type));
         sb.append(',');
-        sb.append("name");
+        sb.append("coordinates");
         sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
-        sb.append(',');
-        sb.append("features");
-        sb.append('=');
-        sb.append(((this.features == null)?"<null>":this.features));
+        sb.append(((this.coordinates == null)?"<null>":this.coordinates));
         sb.append(',');
         sb.append("additionalProperties");
         sb.append('=');
@@ -122,8 +104,7 @@ public class InputGeojson {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.name == null)? 0 :this.name.hashCode()));
-        result = ((result* 31)+((this.features == null)? 0 :this.features.hashCode()));
+        result = ((result* 31)+((this.coordinates == null)? 0 :this.coordinates.hashCode()));
         result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         return result;
@@ -134,11 +115,11 @@ public class InputGeojson {
         if (other == this) {
             return true;
         }
-        if ((other instanceof InputGeojson) == false) {
+        if ((other instanceof Geometry) == false) {
             return false;
         }
-        InputGeojson rhs = ((InputGeojson) other);
-        return (((((this.name == rhs.name)||((this.name!= null)&&this.name.equals(rhs.name)))&&((this.features == rhs.features)||((this.features!= null)&&this.features.equals(rhs.features))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))));
+        Geometry rhs = ((Geometry) other);
+        return ((((this.coordinates == rhs.coordinates)||((this.coordinates!= null)&&this.coordinates.equals(rhs.coordinates)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))));
     }
 
 }

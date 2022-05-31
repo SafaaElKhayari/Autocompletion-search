@@ -1,16 +1,30 @@
 {
-  "properties" : {
-    "id": {
-      "type": "keyword"
+  "analysis": {
+    "filter": {
+      "autocomplete_filter": {
+        "type": "edge_ngram",
+        "min_gram": 1,
+        "max_gram": 20
+      }
     },
-    "description": {
-      "type": "text"
-    },
-    "lat": {
-      "type": "text"
-    },
-    "lon": {
-      "type": "date"
+    "analyzer": {
+      "autocomplete_search": {
+        "type": "custom",
+        "tokenizer": "standard",
+        "filter": [
+          "lowercase"
+        ]
+      },
+      "autocomplete_index": {
+        "type": "custom",
+        "tokenizer": "standard",
+        "filter": [
+          "lowercase",
+          "autocomplete_filter"
+        ]
+      }, "search_analyzer": {
+        "type": "standard"
+      }
     }
   }
 }

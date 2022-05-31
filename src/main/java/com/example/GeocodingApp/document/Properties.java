@@ -1,16 +1,23 @@
 
-package com.example.GeocodingApp.configuration.results;
+package com.example.GeocodingApp.document;
 
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.processing.Generated;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
+
+
+@Setting(settingPath = "static/Settings.json")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "Nom",
@@ -26,9 +33,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 })
 @Generated("jsonschema2pojo")
 public class Properties {
-
+    @Field(type = FieldType.Text, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
     @JsonProperty("Nom")
-    private String nom;
+    private String Nom;
+    @Field(type = FieldType.Keyword)
     @JsonProperty("Nature")
     private String nature;
     @JsonProperty("Indice")
@@ -52,16 +60,16 @@ public class Properties {
 
     @JsonProperty("Nom")
     public String getNom() {
-        return nom;
+        return Nom;
     }
 
     @JsonProperty("Nom")
     public void setNom(String nom) {
-        this.nom = nom;
+        this.Nom = nom;
     }
 
     public Properties withNom(String nom) {
-        this.nom = nom;
+        this.Nom = nom;
         return this;
     }
 
@@ -221,7 +229,7 @@ public class Properties {
         sb.append(Properties.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("nom");
         sb.append('=');
-        sb.append(((this.nom == null)?"<null>":this.nom));
+        sb.append(((this.Nom == null)?"<null>":this.Nom));
         sb.append(',');
         sb.append("nature");
         sb.append('=');
@@ -282,7 +290,7 @@ public class Properties {
         result = ((result* 31)+((this.couleur == null)? 0 :this.couleur.hashCode()));
         result = ((result* 31)+((this.affectatio == null)? 0 :this.affectatio.hashCode()));
         result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
-        result = ((result* 31)+((this.nom == null)? 0 :this.nom.hashCode()));
+        result = ((result* 31)+((this.Nom == null)? 0 :this.Nom.hashCode()));
         result = ((result* 31)+((this.observatio == null)? 0 :this.observatio.hashCode()));
         result = ((result* 31)+((this.shapeArea == null)? 0 :this.shapeArea.hashCode()));
         return result;
@@ -297,7 +305,7 @@ public class Properties {
             return false;
         }
         Properties rhs = ((Properties) other);
-        return ((((((((((((this.commArr == rhs.commArr)||((this.commArr!= null)&&this.commArr.equals(rhs.commArr)))&&((this.surface == rhs.surface)||((this.surface!= null)&&this.surface.equals(rhs.surface))))&&((this.nature == rhs.nature)||((this.nature!= null)&&this.nature.equals(rhs.nature))))&&((this.indice == rhs.indice)||((this.indice!= null)&&this.indice.equals(rhs.indice))))&&((this.shapeLeng == rhs.shapeLeng)||((this.shapeLeng!= null)&&this.shapeLeng.equals(rhs.shapeLeng))))&&((this.couleur == rhs.couleur)||((this.couleur!= null)&&this.couleur.equals(rhs.couleur))))&&((this.affectatio == rhs.affectatio)||((this.affectatio!= null)&&this.affectatio.equals(rhs.affectatio))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.nom == rhs.nom)||((this.nom!= null)&&this.nom.equals(rhs.nom))))&&((this.observatio == rhs.observatio)||((this.observatio!= null)&&this.observatio.equals(rhs.observatio))))&&((this.shapeArea == rhs.shapeArea)||((this.shapeArea!= null)&&this.shapeArea.equals(rhs.shapeArea))));
+        return ((((((((((((this.commArr == rhs.commArr)||((this.commArr!= null)&&this.commArr.equals(rhs.commArr)))&&((this.surface == rhs.surface)||((this.surface!= null)&&this.surface.equals(rhs.surface))))&&((this.nature == rhs.nature)||((this.nature!= null)&&this.nature.equals(rhs.nature))))&&((this.indice == rhs.indice)||((this.indice!= null)&&this.indice.equals(rhs.indice))))&&((this.shapeLeng == rhs.shapeLeng)||((this.shapeLeng!= null)&&this.shapeLeng.equals(rhs.shapeLeng))))&&((this.couleur == rhs.couleur)||((this.couleur!= null)&&this.couleur.equals(rhs.couleur))))&&((this.affectatio == rhs.affectatio)||((this.affectatio!= null)&&this.affectatio.equals(rhs.affectatio))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.Nom == rhs.Nom)||((this.Nom != null)&&this.Nom.equals(rhs.Nom))))&&((this.observatio == rhs.observatio)||((this.observatio!= null)&&this.observatio.equals(rhs.observatio))))&&((this.shapeArea == rhs.shapeArea)||((this.shapeArea!= null)&&this.shapeArea.equals(rhs.shapeArea))));
     }
 
 }

@@ -1,19 +1,21 @@
 package com.example.GeocodingApp.document;
 import com.example.GeocodingApp.helper.Indices;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
-import org.springframework.data.elasticsearch.core.geo.GeoJsonMultiPoint;
-import org.springframework.data.elasticsearch.core.geo.GeoPoint;
 
 @Document(indexName = Indices.ADDRESS_INDEX)
 @Setting(settingPath = "static/Settings.json")
+@Getter
+@Setter
 public class Address {
 
     @Id
     @Field(type = FieldType.Keyword)
     private String id;
 
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
     private String description;
 
     @Field(type = FieldType.Text)

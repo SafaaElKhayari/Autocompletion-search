@@ -1,13 +1,12 @@
 package com.example.GeocodingApp.search;
-
 import com.example.GeocodingApp.document.SearchTermDTO;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.springframework.util.CollectionUtils;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 
-import java.util.Date;
-import java.util.List;
 
 public class SearchUtils {
 
@@ -17,11 +16,21 @@ public class SearchUtils {
     public static SearchRequest buildSearchRequest(final String indexName, final SearchTermDTO dto){
 
         try{
-            final SearchSourceBuilder builder = new SearchSourceBuilder()
-                    .postFilter(getQueryBuilder(dto));
+            final SearchSourceBuilder builder = new SearchSourceBuilder();
+            builder.query(getQueryBuilder(dto));
+            builder.sort(SortBuilders.scoreSort().order(SortOrder.DESC));
+            builder.sort("_score", SortOrder.DESC);
+
+
+            //builder.trackScores(true);
+           // builder.sort(SortBuilders.scoreSort().order(SortOrder.ASC));
+            //builder.sort("_score", SortOrder.DESC);
+           // builder.sort("name", SortOrder.DESC);
+
 
             SearchRequest request = new SearchRequest(indexName);
             request.source(builder);
+
             return request;
 
         }catch (final Exception e){
@@ -32,7 +41,6 @@ public class SearchUtils {
     }
 
 
-
 /* QUERY BUILDER */
 
     private static QueryBuilder getQueryBuilder(final SearchTermDTO dto) {
@@ -40,26 +48,12 @@ public class SearchUtils {
             return null;
         }
 
-        final List<String> fields = dto.getFields();
-        if (CollectionUtils.isEmpty(fields)) {
-            return null;
-        }
+        //String query = "{"bool": {"must": [{"match_phrase": {"countryName": "Spain"}}], "must_not": [], "should": []}}";
+        //QueryBuilder qb = QueryBuilders.wrapperQuery();
+        return QueryBuilders.matchQuery("name", dto.getSearchTerm());
 
-        if (fields.size() > 1) {
-            final MultiMatchQueryBuilder queryBuilder = QueryBuilders.multiMatchQuery(dto.getSearchTerm())
-                    .type(MultiMatchQueryBuilder.Type.CROSS_FIELDS)
-                    .operator(Operator.AND);
 
-            fields.forEach(queryBuilder::field);
 
-            return queryBuilder;
-        }
-
-        return fields.stream()
-                .findFirst()
-                .map(field ->
-                        QueryBuilders.matchQuery(field, dto.getSearchTerm())
-                                .operator(Operator.AND))
-                .orElse(null);
-    }
 }
+    }
+
