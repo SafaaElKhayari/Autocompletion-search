@@ -2,7 +2,7 @@ package com.example.GeocodingApp.helper;
 
 public class Indices {
     public static final String ADDRESS_INDEX = "address";
-    public static final String VOIRIE_INDEX = "voirie";
-    public static final String CONSTRUCTION_INDEX="construction";
+    public static final String DATA_INDEX = "data";
+    public static final String STREETS_INDEX="streets";
 
 }
