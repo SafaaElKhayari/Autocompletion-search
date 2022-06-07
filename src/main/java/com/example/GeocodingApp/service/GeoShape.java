@@ -1,10 +1,14 @@
 package com.example.GeocodingApp.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.gson.JsonArray;
 
 public class GeoShape {
     String type;
     JsonNode coordinates;
+
+
+
     public String getType() {
         return type;
     }

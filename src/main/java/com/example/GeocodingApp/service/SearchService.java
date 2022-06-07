@@ -1,5 +1,4 @@
 package com.example.GeocodingApp.service;
-
 import com.example.GeocodingApp.document.SearchTermDTO;
 import com.example.GeocodingApp.document.Streets;
 import com.example.GeocodingApp.helper.Indices;
@@ -15,16 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SearchService {
 
     private static final ObjectMapper MAPPER = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    private static final Logger LOG = LoggerFactory.getLogger(AddressService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SearchService.class);
     private final RestHighLevelClient client;
 
     @Autowired
@@ -34,6 +30,7 @@ public class SearchService {
 
 
 //Search *******************************************************************
+
     public List<Streets> SearchSuggestions(SearchTermDTO dto) {
         final SearchRequest request = SearchUtils.buildSearchRequest(
                 Indices.STREETS_INDEX,
@@ -42,6 +39,10 @@ public class SearchService {
 
         return searchInternal(request);
     }
+
+
+
+
 
 
 //Search Internal  *******************************************************************
@@ -53,7 +54,6 @@ public class SearchService {
         }
 
         try {
-            System.out.println("Hey from the new service ");
             final SearchResponse response = client.search(request, RequestOptions.DEFAULT);
             final SearchHit[] searchHits = response.getHits().getHits();
             final List<Streets> addresses = new ArrayList<>(searchHits.length);
@@ -63,7 +63,11 @@ public class SearchService {
                 );
             }
 
+
             return addresses;
+
+
+
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             return Collections.emptyList();
@@ -72,4 +76,46 @@ public class SearchService {
     }
 
 
+
+
+
+
+
 }
+
+
+
+/*
+ try {
+
+final SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+final List<Streets> addresses2 = new ArrayList<>();
+        SearchHits hits = response.getHits();
+        Iterator<SearchHit> iterator = hits.iterator();
+        Map<String, SearchHit> distinctObjects = new HashMap<String,SearchHit>();
+        while (iterator.hasNext()) {
+        SearchHit searchHit = (SearchHit) iterator.next();
+        Map<String, Object> source = searchHit.getSourceAsMap();
+        if(source.get("name") != null){
+        distinctObjects.put(source.get("name").toString(), searchHit);
+
+        }
+
+        }
+
+        distinctObjects.forEach((k,v)-> {
+        try {
+        addresses2.add(
+        MAPPER.readValue(v.getSourceAsString(), Streets.class)
+        );
+        } catch (JsonProcessingException e) {
+        e.printStackTrace();
+        }
+        });
+
+        return addresses2;
+
+        } catch (Exception e) {
+        LOG.error(e.getMessage(), e);
+        return Collections.emptyList();
+        }*/

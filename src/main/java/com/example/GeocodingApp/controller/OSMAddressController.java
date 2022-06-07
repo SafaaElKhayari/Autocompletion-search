@@ -1,6 +1,5 @@
 package com.example.GeocodingApp.controller;
 import com.example.GeocodingApp.document.SearchTermDTO;
-import com.example.GeocodingApp.service.OSMAddressService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,14 +16,6 @@ import java.net.URL;
 @RestController
 @RequestMapping( "/")
 public class OSMAddressController {
-
-    private final OSMAddressService service;
-
-
-    @Autowired
-    public OSMAddressController(OSMAddressService service) {
-        this.service = service;
-    }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/reverseGeocoding",
