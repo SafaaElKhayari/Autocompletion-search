@@ -1,14 +1,13 @@
 package com.example.GeocodingApp.document;
+
 import com.example.GeocodingApp.helper.Indices;
 import com.example.GeocodingApp.service.GeoShape;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
-import org.springframework.data.elasticsearch.core.geo.GeoJsonPolygon;
 
-@Document(indexName = Indices.AREAS_INDEX)
+@Document(indexName = Indices.QUARTER_INDEX)
 @Setting(settingPath = "static/mapping/address.json")
-
-public class Areas {
+public class Quarters extends  Address{
     @Id
     @Field(type = FieldType.Keyword)
     private String id;
@@ -16,10 +15,10 @@ public class Areas {
     private String name;
     @Field(type = FieldType.Keyword)
     private String type;
-    @Field(type = FieldType.Keyword)
-    private String city;
+    @Field(type = FieldType.Text, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
+    private String address;
     @GeoShapeField
-    private GeoJsonPolygon coordinates ;
+    private GeoShape coordinates ;
 
     public String getId() {
         return id;
@@ -45,19 +44,15 @@ public class Areas {
         this.type = type;
     }
 
-    public String getCity() {
-        return city;
-    }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
 
-    public GeoJsonPolygon getCoordinates() {
+    public GeoShape getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(GeoJsonPolygon coordinates) {
+    public void setCoordinates(GeoShape coordinates) {
         this.coordinates = coordinates;
     }
+
+
 }

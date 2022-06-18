@@ -1,7 +1,7 @@
 package com.example.GeocodingApp.controller;
+import com.example.GeocodingApp.document.Address;
 import com.example.GeocodingApp.document.SearchTermDTO;
-import com.example.GeocodingApp.document.Streets;
-import com.example.GeocodingApp.service.ReadFile;
+import com.example.GeocodingApp.service.ReadStreetFromOSMFile;
 import com.example.GeocodingApp.service.SearchService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,17 +22,17 @@ import java.util.List;
 public class MainController {
 
     private final SearchService service;
-    private final ReadFile readFileService;
+    private final ReadStreetFromOSMFile readFileService;
 
     @Autowired
-    public MainController(SearchService service, ReadFile readFileService) {
+    public MainController(SearchService service, ReadStreetFromOSMFile readFileService) {
         this.service = service;
         this.readFileService = readFileService;
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping(value = "/search", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<Streets> getSearchSuggestions(@RequestBody final SearchTermDTO searchTerm){
+    public List<Address> getSearchSuggestions(@RequestBody final SearchTermDTO searchTerm){
         return service.SearchSuggestions(searchTerm);
     }
 
@@ -42,6 +42,12 @@ public class MainController {
     @GetMapping(value = "/extract")
     public void extract() throws IOException {
         readFileService.extractJSON();
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value = "/extractAmenity")
+    public void extractAmenity() throws IOException {
+        readFileService.readAmenities();
     }
 
 

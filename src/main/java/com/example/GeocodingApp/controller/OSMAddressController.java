@@ -41,8 +41,8 @@ public class OSMAddressController {
 
         while ((line = rd.readLine()) != null)
         {
-            sb.append(line + '\n');
-        }
+                sb.append(line + '\n');
+            }
 
 
 

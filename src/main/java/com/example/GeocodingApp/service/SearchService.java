@@ -1,6 +1,6 @@
 package com.example.GeocodingApp.service;
+import com.example.GeocodingApp.document.Address;
 import com.example.GeocodingApp.document.SearchTermDTO;
-import com.example.GeocodingApp.document.Streets;
 import com.example.GeocodingApp.helper.Indices;
 import com.example.GeocodingApp.search.SearchUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -31,9 +31,10 @@ public class SearchService {
 
 //Search *******************************************************************
 
-    public List<Streets> SearchSuggestions(SearchTermDTO dto) {
-        final SearchRequest request = SearchUtils.buildSearchRequest(
-                Indices.STREETS_INDEX,
+    public List<Address> SearchSuggestions(SearchTermDTO dto) {
+        final SearchRequest request = SearchUtils.buildSearchRequest(Indices.REGIONS_INDEX,
+                Indices.STREETS_INDEX
+                ,
                 dto
         );
 
@@ -47,7 +48,7 @@ public class SearchService {
 
 //Search Internal  *******************************************************************
 
-    private List<Streets> searchInternal(SearchRequest request) {
+    private List<Address> searchInternal(SearchRequest request) {
         if (request == null) {
             LOG.error("Failed to build search request");
             return Collections.emptyList();
@@ -56,10 +57,10 @@ public class SearchService {
         try {
             final SearchResponse response = client.search(request, RequestOptions.DEFAULT);
             final SearchHit[] searchHits = response.getHits().getHits();
-            final List<Streets> addresses = new ArrayList<>(searchHits.length);
+            final List<Address> addresses = new ArrayList<>(searchHits.length);
             for (SearchHit hit : searchHits) {
                 addresses.add(
-                        MAPPER.readValue(hit.getSourceAsString(), Streets.class)
+                        MAPPER.readValue(hit.getSourceAsString(), Address.class)
                 );
             }
 

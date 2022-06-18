@@ -3,7 +3,6 @@ import com.example.GeocodingApp.document.SearchTermDTO;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -13,24 +12,15 @@ public class SearchUtils {
 
 /*Search Request*/
 
-    public static SearchRequest buildSearchRequest(final String indexName, final SearchTermDTO dto){
+    public static SearchRequest buildSearchRequest(final String indexName1,final String indexName2, final SearchTermDTO dto){
 
         try{
             final SearchSourceBuilder builder = new SearchSourceBuilder();
             builder.query(getQueryBuilder(dto));
             builder.sort(SortBuilders.scoreSort().order(SortOrder.DESC));
             builder.sort("_score", SortOrder.DESC);
-
-
-            //builder.trackScores(true);
-           // builder.sort(SortBuilders.scoreSort().order(SortOrder.ASC));
-            //builder.sort("_score", SortOrder.DESC);
-           // builder.sort("name", SortOrder.DESC);
-
-
-            SearchRequest request = new SearchRequest(indexName);
+            SearchRequest request = new SearchRequest(indexName1,indexName2);
             request.source(builder);
-
             return request;
 
         }catch (final Exception e){
@@ -47,9 +37,10 @@ public class SearchUtils {
         if (dto == null) {
             return null;
         }
+        /*QueryBuilder queryBuilder = QueryBuilders.boolQuery()
+                .must(QueryBuilders.matchQuery("name", dto.getSearchTerm()))
+                .must(QueryBuilders.matchQuery("address", dto.getSearchTerm()));*/
 
-        //String query = "{"bool": {"must": [{"match_phrase": {"countryName": "Spain"}}], "must_not": [], "should": []}}";
-        //QueryBuilder qb = QueryBuilders.wrapperQuery();
         return QueryBuilders.matchQuery("name", dto.getSearchTerm());
 
 
