@@ -142,7 +142,6 @@ public class ReadStreetFromOSMFile {
                 }
             }
 
-
             if (returnValue==null && name!=null && street_address != "invalid"){
                 try {
                     System.out.println(i);

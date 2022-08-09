@@ -1,11 +1,13 @@
 package com.example.GeocodingApp.controller;
 import com.example.GeocodingApp.document.Address;
+import com.example.GeocodingApp.document.History;
 import com.example.GeocodingApp.document.SearchTermDTO;
 import com.example.GeocodingApp.service.ReadStreetFromOSMFile;
 import com.example.GeocodingApp.service.SearchService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +16,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
 @RestController
 @RequestMapping( "/api")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MainController {
 
     private final SearchService service;
@@ -30,28 +34,49 @@ public class MainController {
         this.readFileService = readFileService;
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+
     @PostMapping(value = "/search", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Address> getSearchSuggestions(@RequestBody final SearchTermDTO searchTerm){
         return service.SearchSuggestions(searchTerm);
     }
 
+    @PostMapping(value = "/insertData", consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void insertData(@RequestBody final JsonNode content) throws IOException {
+
+        service.InsertDataService(content);
+    }
 
 
-    @CrossOrigin(origins = "http://localhost:3000")
+
+
     @GetMapping(value = "/extract")
     public void extract() throws IOException {
         readFileService.extractJSON();
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
+
     @GetMapping(value = "/extractAmenity")
     public void extractAmenity() throws IOException {
         readFileService.readAmenities();
     }
 
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping(value = "/getHistory")
+    public List<History> history()  {
+       return service.getHistory();
+    }
+
+
+    @PostMapping(value = "/saveHistory",
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public void saveHistory(@RequestBody final JsonNode searchTerm) throws IOException {
+        System.out.println(searchTerm.toString());
+        service.saveHistory(searchTerm);
+    }
+
+
+
     @PostMapping(value = "/geocoding",
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
